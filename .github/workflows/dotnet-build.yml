@@ -1,4 +1,4 @@
-name: Meu Workflow
+name: Meu workflow dotnet test
 
 on:
   push:
@@ -12,17 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
-      
-      # Adicione suas ações pré-existentes aqui
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          node-version: '14'
-          
-      # Adicione seus scripts personalizados aqui
-      - name: Execute Script Personalizado
+          dotnet-version: '7.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore github4women/github4women.csproj
+
+      - name: Build project
+        run: dotnet build github4women/github4women.csproj --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test github4women/github4women.csproj --no-restore --verbosity normal
+
+      - name: Custom script example
         run: |
-          echo "Este é um script personalizado"
-          npm install
-          npm test
+          echo "Executing custom script"
+          # Adc 
